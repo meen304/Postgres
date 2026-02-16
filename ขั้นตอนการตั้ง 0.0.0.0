@@ -1,0 +1,27 @@
+1. แก้ไขไฟล์คอนฟิก (ในเครื่อง Server)
+โดยปกติไฟล์จะอยู่ที่ C:\Program Files\PostgreSQL\{version}\data 
+postgresql.conf:
+เปิดด้วย Notepad (Run as Administrator)
+ค้นหา listen_addresses และเปลี่ยนเป็น listen_addresses = '*'
+pg_hba.conf:
+เลื่อนลงไปล่างสุดแล้วเพิ่มบรรทัด: host all all 0.0.0.0/0 md5
+หากต้องการใช้ IPv6 ด้วย ให้เพิ่ม: host all all ::/0 md5 
+2. ตั้งค่า Windows Firewall (เปิด Port 5432)
+เพื่อให้เครื่องอื่นใน LAN ข้ามกำแพงความปลอดภัยของ Windows เข้ามาได้:
+กดปุ่ม Start พิมพ์คำว่า "Windows Defender Firewall with Advanced Security" แล้วกด Enter
+คลิกที่ Inbound Rules (แถบด้านซ้าย) แล้วเลือก New Rule... (แถบด้านขวา)
+เลือก Port แล้วกด Next
+เลือก TCP และระบุ Specific local ports: 5432 แล้วกด Next
+เลือก Allow the connection แล้วกด Next
+ติ๊กถูกทั้ง Domain, Private, Public (เพื่อให้ครอบคลุมทุกวงแลน)
+ตั้งชื่อว่า "PostgreSQL Remote Access" แล้วกด Finish 
+3. Restart Service บน Windows
+เลือกทำวิธีใดวิธีหนึ่ง:
+วิธีที่ 1 (ผ่านหน้าจอ): กด Win + R พิมพ์ services.msc หาชื่อ postgresql-x64-{version} คลิกขวาแล้วกด Restart
+วิธีที่ 2 (ผ่าน Command Prompt): เปิด CMD แบบ Run as Administrator แล้วพิมพ์:
+cmd
+net stop postgresql-x64-16 && net start postgresql-x64-16
+ใช้โค้ดอย่างระมัดระวัง
+
+(เปลี่ยนเลข 16 เป็นเวอร์ชันที่คุณใช้) 
+วิธีทดสอบ: ไปที่เครื่องลูกใน LAN เดียวกัน ใช้โปรแกรมอย่าง pgAdmin หรือ DBeaver เชื่อมต่อไปยัง IP Address ของเครื่อง Server ที่พอร์ต 5432 ครับ 
