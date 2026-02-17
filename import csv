@@ -1,0 +1,10 @@
+create column same table but without (private key,PK or trigger etc. example trigger timestamp) ***
+and next step go to GUI pgadmin4 on menu table what want to import
+menu import/export
+select 
+csv
+encoding UTF8
+header : yes 
+delimeter : ","
+column select only excel have and should be dont have ***
+
